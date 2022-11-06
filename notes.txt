@@ -1,0 +1,59 @@
+crear el entorno virtual
+
+-instalar herramienta
+ 
+pip install django
+
+-activar repertorio - git init
+
+-crear proyecto
+
+django-admin startproject premiosplatziapp
+
+-activar servidor local #### correr el programa
+
+python manage.py runserver
+
+crear una aplicacion de nuestro proyecto
+
+- python manage.py startapp polls //polls es una aplicacion que hace parte del proyecto
+
+con Django se deben usar bases de datos relacionales
+
+ORM
+Object Relational Mapping
+
+relaciona la estructura de una base de datos relacional con programacion orientada a objetos
+
+-la clase corresponde a una tabla // una tabla de datos en programacion será una clase
+-las columnas correspoden a atributos 
+-los tipos de datos de cada columna serán clases
+
+
+
+//______estos dos pasos se repiten siempre q se haga un cambio
+-Crear modelos con las clases creadas en polls
+python manage.py makemigrations polls
+
+-migrar los modelos para generar las tablas de los datos
+python manage.py migrate
+//______________________
+- acceder a la consola interactiva de django
+
+python manage.py shell
+
+- crear una pregunta en el shell
+q = Question(question_text="cual es el mejor curso de platzi?",pub_date=timezone.now())
+q.save()
+
+-crear super usuario
+winpty python manage.py createsuperuser
+
+
+MTV
+Model - Template - view
+
+-Formularios
+poner esta linea para evitar los hackeos por medio de formularios
+{% csrf_token %}
+
