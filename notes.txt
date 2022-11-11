@@ -57,3 +57,26 @@ Model - Template - view
 poner esta linea para evitar los hackeos por medio de formularios
 {% csrf_token %}
 
+
+-- agregar preguntas
+
+
+q=Question(question_text="Quien es el mejor Course Director?", pub_date=timezone.now()+datetime.timedelta(days=30))
+saber si fue publicado ultimamente
+q.was_published_recently()
+
+
+Steps to solve a bug
+1 identify the problem
+2. create a test
+3. run the test
+4. fix the problem
+5. run the test
+
+administrador de Django
+http://127.0.0.1:8000/admin/
+
+
+Crear respuestas
+
+q=Question.objects.get(pk=1)
