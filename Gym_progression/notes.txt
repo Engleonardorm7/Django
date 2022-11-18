@@ -80,3 +80,11 @@ http://127.0.0.1:8000/admin/
 Crear respuestas
 
 q=Question.objects.get(pk=1)
+
+
+en cada proyecto crear un super user:
+
+python manage.py createsuperuser
+
+- si sale error usar este comando:
+winpty python manage.py createsuperuser

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 #importa libreria para crear formularios de autenticacion
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 #libreria para guardar usuarios
@@ -6,6 +6,9 @@ from django.contrib.auth.models import User
 #libreria para trabajar dentro de cada usuario
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
+
+from .forms import RecordForm
+from .models import Record
 # from django.http import HttpResponse
 
 # Create your views here.
@@ -40,7 +43,36 @@ def signup(request):
                 })
 
 def tasks(request):
-    return render(request,'tasks.html')
+    records=Record.objects.filter(user=request.user)
+
+    return render(request,'tasks.html',{'tasks':records})
+
+def create_record(request):
+
+    if request.method == 'GET':
+        return render(request, 'create_record.html',{
+            'form': RecordForm
+        })
+    else:
+        try:
+            #When the method is POST
+            form= RecordForm(request.POST)
+            new_record=form.save(commit=False)
+            new_record.user=request.user
+            new_record.save()
+            
+            return redirect('tasks')
+        except ValueError:
+            return render(request, 'create_record.html',{
+                'form':RecordForm,
+                'error': 'Please provide valid data'
+            })
+            
+def record_detail(request,record_id):
+    # record=Record.objects.get(pk=record_id) - si no existe el record se cae el servidor por eso es mejor usar el siguiente:
+    record=get_object_or_404(Record, pk=record_id)
+    return render(request,"record_detail.html",{'record':record})
+
 #no se pone logout porq como se importó la libreria login, es un comando q ocasiona conflicto
 def signout(request):
     logout(request)
