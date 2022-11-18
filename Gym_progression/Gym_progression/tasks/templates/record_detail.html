@@ -3,6 +3,13 @@
 {% block content %}
     
 <h1>Record Detail</h1>
+{{error}}
 <li>{{record.weight}}</li>
-
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>
+        Update
+    </button>
+</form>
 {% endblock %}

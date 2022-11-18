@@ -69,10 +69,22 @@ def create_record(request):
             })
             
 def record_detail(request,record_id):
-    # record=Record.objects.get(pk=record_id) - si no existe el record se cae el servidor por eso es mejor usar el siguiente:
-    record=get_object_or_404(Record, pk=record_id)
-    return render(request,"record_detail.html",{'record':record})
-
+    if request.method == 'GET':
+        # record=Record.objects.get(pk=record_id) - si no existe el record se cae el servidor por eso es mejor usar el siguiente:
+        record=get_object_or_404(Record, pk=record_id,user=request.user)
+        form=RecordForm(instance=record)
+        return render(request,"record_detail.html",{'record':record, 'form':form})
+    else:
+        try:
+            record=get_object_or_404(Record, pk=record_id,user=request.user)
+            form=RecordForm(request.POST, instance=record)
+            form.save()
+            return redirect('tasks')
+        except ValueError:
+            return render(request,"record_detail.html",{'record':record, 'form':form,
+            'error':"Error updating record"})
+   
+        
 #no se pone logout porq como se importó la libreria login, es un comando q ocasiona conflicto
 def signout(request):
     logout(request)
