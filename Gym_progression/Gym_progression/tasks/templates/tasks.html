@@ -3,11 +3,17 @@
 
 {% block content %}
     
-<h1>Tasks</h1>
+<h1>Records</h1>
 
 {% for record in tasks %}
-<h1>{{record.date}}</h1>
-<li>{{record.weight}}</li>
-<p>{{record.user.username}}</p>
+<li>
+    <a href="{% url 'record_detail' record.id %}">
+        <h1>{{record.date}}</h1>
+        <li>{{record.weight}}</li>
+        <p>{{record.user.username}}</p>
+
+
+    </a>
+</li>
 {% endfor %}
 {% endblock %}
