@@ -9,6 +9,10 @@ from django.db import IntegrityError
 
 from .forms import RecordForm
 from .models import Record
+
+#para protejer las rutas, es decir que no puedan acceder por medio del link
+from django.contrib.auth.decorators import login_required
+
 # from django.http import HttpResponse
 
 # Create your views here.
@@ -41,12 +45,13 @@ def signup(request):
                 'form':UserCreationForm,
                 'error': "Password do not match"
                 })
-
+@login_required
 def tasks(request):
     records=Record.objects.filter(user=request.user)
 
     return render(request,'tasks.html',{'tasks':records})
 
+@login_required
 def create_record(request):
 
     if request.method == 'GET':
@@ -67,7 +72,8 @@ def create_record(request):
                 'form':RecordForm,
                 'error': 'Please provide valid data'
             })
-            
+
+@login_required          
 def record_detail(request,record_id):
     if request.method == 'GET':
         # record=Record.objects.get(pk=record_id) - si no existe el record se cae el servidor por eso es mejor usar el siguiente:
@@ -83,8 +89,15 @@ def record_detail(request,record_id):
         except ValueError:
             return render(request,"record_detail.html",{'record':record, 'form':form,
             'error':"Error updating record"})
-   
-        
+
+@login_required 
+def delete_record(request, record_id):
+    record=get_object_or_404(Record,pk=record_id, user=request.user)
+    if request.method == 'POST':
+           record.delete()
+           return redirect('tasks')
+
+@login_required
 #no se pone logout porq como se importó la libreria login, es un comando q ocasiona conflicto
 def signout(request):
     logout(request)

@@ -81,6 +81,9 @@ Crear respuestas
 
 q=Question.objects.get(pk=1)
 
+crear tablas
+python manage.py makemigrations
+
 
 en cada proyecto crear un super user:
 

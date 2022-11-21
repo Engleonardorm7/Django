@@ -11,5 +11,12 @@
     <button>
         Update
     </button>
+    
+</form>
+<form action= "{% url 'delete_record' record.id %}" method='POST'>
+    {% csrf_token %}
+    <button>
+        Delete
+    </button>
 </form>
 {% endblock %}
