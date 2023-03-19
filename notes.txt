@@ -31,8 +31,13 @@ relaciona la estructura de una base de datos relacional con programacion orienta
 -las columnas correspoden a atributos 
 -los tipos de datos de cada columna serán clases
 
+se crean las clases en models
 
+posteriormente se agrega la aplicacion "polls" al archivo de settings en INSTALLED_APPS:
 
+'polls.apps.PollsConfig',		#se agrega la aplicación que se ha creado
+
+para agregar la estrucura de la base de datos
 //______estos dos pasos se repiten siempre q se haga un cambio
 -Crear modelos con las clases creadas en polls
 python manage.py makemigrations polls
@@ -40,6 +45,9 @@ python manage.py makemigrations polls
 -migrar los modelos para generar las tablas de los datos
 python manage.py migrate
 //______________________
+
+
+
 - acceder a la consola interactiva de django
 
 python manage.py shell
@@ -48,9 +56,53 @@ python manage.py shell
 q = Question(question_text="cual es el mejor curso de platzi?",pub_date=timezone.now())
 q.save()
 
+o
+
+Question(question_text="Que tipo de proteina prefiere?",pub_date=timezone.now()).save()
+Question(question_text="De que rango de precios sueles comprar tus proteinas?",pub_date=timezone.now()).save()
+
+-buscar por primary key
+
+Question.objects.get(pk=1)
+Question.objects.get(pk=1).delete()
+
+import os
+
+os.system("clear")
+
+-buscar por date:
+
+Question.objects.filter(pub_date__year=timezone.now().year)
+
+filtrar por pk o por question:text
+
+Question.objects.filter(pk=2)
+
+Question.objects.filter(question_text__startswith="Cual")
+
+- crear preguntas:
+
+q=Question.objects.get(pk=2)
+q.choice_set.all()
+
+q.choice_set.create(choice_text="Whey gold standard",votes=0)
+q.choice_set.create(choice_text="Vitanas",votes=0)
+q.choice_set.create(choice_text="Best Protein",votes=0)
+
+-mostrar cantidad de respuestas
+
+q.choice_set.count()
+
+
+Administrador de DJANGO
+
 -crear super usuario
 winpty python manage.py createsuperuser
 
+Leonardo
+leonardorm7@hotmail.com
+
+http://127.0.0.1:8000/admin
 
 MTV
 Model - Template - view
